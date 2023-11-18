@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1728260961081212591}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.5, z: 0}
+  m_LocalPosition: {x: -3, y: -4.2, z: 0}
   m_LocalScale: {x: 6.783644, y: 6.783644, z: 6.783644}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 5327809086021377463}
   m_Layer: 0
   m_Name: Enemy 2
-  m_TagString: Untagged
+  m_TagString: Enemy2
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62,14 +62,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4445469738575641933}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -3.78, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5916131678240868083}
+  - {fileID: 1569328565662511154}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &475222504092824071
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -111,7 +112,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 1bdedede51900a7408d070470df21a86, type: 3}
+  m_Sprite: {fileID: -75746781, guid: 4005669cc4353e449a72526fa444a278, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -151,21 +152,21 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.60514784}
+  m_Offset: {x: 0.00595212, y: -0.0029902458}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.43, y: 7.34}
+    oldSize: {x: 10.666667, y: 5.3333335}
     newSize: {x: 5.43, y: 7.34}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.1007557, y: 5.834997}
+  m_Size: {x: 10.672148, y: 5.5917435}
   m_EdgeRadius: 0
 --- !u!50 &1526103442855932234
 Rigidbody2D:
@@ -207,16 +208,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  rotate_Speed: 50
   enemyBulletPrefab: {fileID: 3461745521596952284, guid: aa9d1489fae36dc4eaaa2d3469d3940f, type: 3}
   bulletSpeed: 5
   shootInterval: 2
-  moveSpeed: 2
-  min_Y: -6.2
-  max_Y: 6.27
-  min_X: -6.2
-  max_X: 6.2
-  attack_Point: {fileID: 5916131678240868083}
+  attackPoints:
+  - {fileID: 5916131678240868083}
+  - {fileID: 1569328565662511154}
 --- !u!82 &4944859285091079964
 AudioSource:
   m_ObjectHideFlags: 0
@@ -349,3 +346,34 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!1 &5870950610312738618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1569328565662511154}
+  m_Layer: 0
+  m_Name: Attack Point Enemy 2 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1569328565662511154
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5870950610312738618}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3, y: -4.2, z: 0}
+  m_LocalScale: {x: 6.783644, y: 6.783644, z: 6.783644}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7761881134680272049}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

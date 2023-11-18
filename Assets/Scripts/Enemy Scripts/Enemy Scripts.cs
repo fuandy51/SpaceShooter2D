@@ -5,29 +5,50 @@ using UnityEngine;
 public class EnemyScripts : MonoBehaviour
 {
     public float speed = 5f;
-    public float rotate_Speed = 50f;
     private Animator anim;
-
+    public event System.Action destroyed;
     public GameObject enemyBulletPrefab;
     public float bulletSpeed = 5f;
     public float shootInterval = 2f;
-    public float moveSpeed = 2f;
-    public float min_Y, max_Y;
 
     [SerializeField]
-    private Transform attack_Point;
+    private List<Transform> attackPoints = new List<Transform>(); // Using a list to store attack points
 
-    
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("PlayerBullet")|| 
+            other.CompareTag("Player"))
+            
+        {
+            PlayDestroyAnimationAndDestroy();
+        }
+        else if (other.CompareTag("Boundary"))
+        {
+            DestroyEnemy();
+        }
+    }
+
+    void PlayDestroyAnimationAndDestroy()
     {
         anim.Play("Destroy1");
-        Destroy(gameObject, 0.5f);
+        Invoke("DestroyEnemy", 0.25f);
+    }
+
+    void DestroyEnemy()
+    {
+        if (destroyed != null)
+        {
+            destroyed.Invoke();
+        }
+
+        Destroy(gameObject);
     }
 
     void Start()
     {
         anim = GetComponent<Animator>();
         StartCoroutine(ShootRandomly());
+        gameObject.SetActive(true);
     }
 
     IEnumerator ShootRandomly()
@@ -46,16 +67,22 @@ public class EnemyScripts : MonoBehaviour
 
     void Shoot()
     {
-        GameObject bullet = Instantiate(enemyBulletPrefab, attack_Point.position, Quaternion.Euler(0f, 0f, 90f));
-        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-
-        // Set the bullet's initial velocity along the y-axis
-        bulletRb.velocity = new Vector2(0f, -bulletSpeed);
+        foreach (Transform attackPoint in attackPoints)
+        {
+            GameObject bullet = Instantiate(enemyBulletPrefab, attackPoint.position, Quaternion.identity);
+            Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+            bullet.tag = "EnemyBullet";
+            bulletRb.velocity = new Vector2(0f, -bulletSpeed);
+        }
     }
 
     void MoveEnemy()
     {
-        // Move the enemy downward
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
+        transform.Translate(Vector2.down * speed * Time.deltaTime);
+    }
+
+    void DeactivateGameObject()
+    {
+        gameObject.SetActive(false);
     }
 }

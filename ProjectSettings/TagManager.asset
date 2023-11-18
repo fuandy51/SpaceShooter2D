@@ -5,7 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - New tag
-  - Bullet Player
+  - Boundary
+  - PlayerBullet
+  - EnemyBullet
+  - Bullet
+  - Enemy1
+  - Enemy2
+  - Score
   layers:
   - Default
   - TransparentFX
