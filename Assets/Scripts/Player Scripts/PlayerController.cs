@@ -5,7 +5,6 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;
     public float min_X, max_X;
-    public event System.Action destroyed;
 
     private Animator anim;
 
@@ -18,11 +17,13 @@ public class PlayerController : MonoBehaviour
     public float attack_Timer = 0.35f;
     private float current_Attack_Timer;
     private bool canAttack;
-    Vector2 startPos;
+    private bool isDestroyed = false; // Added variable to track player state
+    private Vector2 startPos;
 
     // Start is called before the first frame update
     void Start()
     {
+        
         startPos = transform.position;
         anim = GetComponent<Animator>();
         gameObject.SetActive(true);
@@ -37,7 +38,8 @@ public class PlayerController : MonoBehaviour
     void PlayDestroyAnimationAndRespawn()
     {
         anim.Play("PlayerExplosion");
-        StartCoroutine(SwitchToIdleAfterDelay(0.5f));
+        StartCoroutine(SwitchToIdleAfterDelay(0.35f));
+        
     }
 
     IEnumerator SwitchToIdleAfterDelay(float delay)
@@ -49,16 +51,22 @@ public class PlayerController : MonoBehaviour
 
     void Respawn()
     {
+        isDestroyed = false;
+        
+        // Set player state to active
         transform.position = startPos;
     }
 
     // Update is called once per frame
     void Update()
     {
-        MovePlayer();
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!isDestroyed)
         {
-            Attack();
+            MovePlayer();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Attack();
+            }
         }
     }
 
@@ -83,10 +91,10 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("EnemyBullet")|| 
-            other.CompareTag("Enemy1")|| 
-            other.CompareTag("Enemy2"))
+        if (!isDestroyed && (other.CompareTag("EnemyBullet") || other.CompareTag("Enemy1") || other.CompareTag("Enemy2")))
         {
+            
+            isDestroyed = true; // Set player state to destroyed
             PlayDestroyAnimationAndRespawn();
             Destroy(other.gameObject);
         }

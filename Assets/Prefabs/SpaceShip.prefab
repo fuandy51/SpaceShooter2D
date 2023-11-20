@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 2281758063082096697}
   - component: {fileID: 1261852875023597238}
   - component: {fileID: 7484000734255628450}
+  - component: {fileID: 2439149961389862647}
   m_Layer: 0
   m_Name: SpaceShip
   m_TagString: Player
@@ -227,7 +228,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 3
   currentHealth: 3
-  hearts:
-  - {fileID: 0}
-  fullHeart: {fileID: 21300000, guid: 5d635051d72d09b4f9a001faf6ce0614, type: 3}
-  emptyHeart: {fileID: 0}
+  heartPrefab: {fileID: 5468411235424745930, guid: 7a58f349929a33f4e892027ca0bdf54e, type: 3}
+  heartsParent: {fileID: 0}
+  gameOverMenu: {fileID: 0}
+--- !u!114 &2439149961389862647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8704492073959230890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc568949a136304392e62824476e986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  min_X: -6.2
+  max_X: 6.2
+  healthScript: {fileID: 0}
+  player_Bullet: {fileID: 1770655349911081814, guid: a84270869fa6b31429b97ec910954ed6, type: 3}
+  attack_Point: {fileID: 5084564958789459440}
+  attack_Timer: 0.35

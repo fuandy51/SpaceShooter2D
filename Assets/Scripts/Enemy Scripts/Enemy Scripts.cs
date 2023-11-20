@@ -12,42 +12,81 @@ public class EnemyScripts : MonoBehaviour
     public float shootInterval = 2f;
 
     [SerializeField]
-    private List<Transform> attackPoints = new List<Transform>(); // Using a list to store attack points
+    private List<Transform> attackPoints = new List<Transform>();
+
+    private bool isDestroyed = false;
+    private bool isMovingRight = true; // Flag to determine the direction of horizontal movement
+
+    [SerializeField]
+    private int maxHealth = 1;
+
+    // Adjust the maximum health as needed
+    private int currentHealth;
+
+    [SerializeField]
+    private float leftBound = -5f; // Adjust as needed
+    [SerializeField]
+    private float rightBound = 5f; // Adjust as needed
+    [SerializeField]
+    private float movementDelay = 2f; // Adjust as needed
+    [SerializeField]
+    private float downwardDistance = 2f; // Adjust as needed
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("PlayerBullet")|| 
-            other.CompareTag("Player"))
-            
+        if (!isDestroyed)
+        {
+            if (other.CompareTag("PlayerBullet") || other.CompareTag("Player"))
+            {
+                TakeDamage();
+            }
+            else if (other.CompareTag("Boundary"))
+            {
+                DestroyEnemy();
+            }
+        }
+    }
+
+    void TakeDamage()
+    {
+        currentHealth--;
+
+        if (currentHealth <= 0)
         {
             PlayDestroyAnimationAndDestroy();
-        }
-        else if (other.CompareTag("Boundary"))
-        {
-            DestroyEnemy();
         }
     }
 
     void PlayDestroyAnimationAndDestroy()
     {
+        // Disable the collider during the animation
+        GetComponent<Collider2D>().enabled = false;
+
         anim.Play("Destroy1");
         Invoke("DestroyEnemy", 0.25f);
     }
 
     void DestroyEnemy()
     {
-        if (destroyed != null)
+        if (!isDestroyed)
         {
-            destroyed.Invoke();
-        }
+            isDestroyed = true;
 
-        Destroy(gameObject);
+            if (destroyed != null)
+            {
+                destroyed.Invoke();
+            }
+
+            Destroy(gameObject);
+        }
     }
 
     void Start()
     {
         anim = GetComponent<Animator>();
+        currentHealth = maxHealth;
         StartCoroutine(ShootRandomly());
+        StartCoroutine(MoveRandomly());
         gameObject.SetActive(true);
     }
 
@@ -58,11 +97,6 @@ public class EnemyScripts : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(0f, shootInterval));
             Shoot();
         }
-    }
-
-    void Update()
-    {
-        MoveEnemy();
     }
 
     void Shoot()
@@ -76,13 +110,31 @@ public class EnemyScripts : MonoBehaviour
         }
     }
 
-    void MoveEnemy()
+    IEnumerator MoveRandomly()
     {
-        transform.Translate(Vector2.down * speed * Time.deltaTime);
-    }
+        while (true)
+        {
+            float moveDirection = isMovingRight ? 1f : -1f;
+            float targetX = transform.position.x + moveDirection * Random.Range(leftBound, rightBound);
 
-    void DeactivateGameObject()
-    {
-        gameObject.SetActive(false);
+            while (Mathf.Abs(transform.position.x - targetX) > 0.1f)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, new Vector2(targetX, transform.position.y), speed * Time.deltaTime);
+                yield return null;
+            }
+
+            // Move downward
+            float targetY = transform.position.y - downwardDistance;
+
+            while (transform.position.y > targetY)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, targetY), speed * Time.deltaTime);
+                yield return null;
+            }
+
+            isMovingRight = !isMovingRight;
+
+            yield return new WaitForSeconds(movementDelay);
+        }
     }
 }
