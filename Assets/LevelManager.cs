@@ -7,6 +7,8 @@ public class LevelManager : MonoBehaviour
     public float timeBeforeNextLevel = 60f; // Waktu sebelum beralih ke level berikutnya
     public string youWinSceneName = "You Win"; // Nama scene menang
 
+    AudioManager audioManager;
+
     void Start()
     {
         StartCoroutine(LoadNextLevelAfterDelay());

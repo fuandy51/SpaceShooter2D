@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    [Header("Audio Source \n")]
+    [SerializeField] AudioSource musicSource;
+    [SerializeField] AudioSource SFXSource;
+
+    [Header("Audio Clip \n")]
+    public AudioClip enemyShoot;
+    public AudioClip destroy;
+    public AudioClip playerShoot;
+    public AudioClip background;
+
+    public void Start()
     {
-        
+        musicSource.clip = background;
+        musicSource.Play();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlaySFX(AudioClip clip)
     {
-        
+        SFXSource.PlayOneShot(clip);
     }
 }

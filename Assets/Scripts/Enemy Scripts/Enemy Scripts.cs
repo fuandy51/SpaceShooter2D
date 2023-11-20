@@ -11,6 +11,8 @@ public class EnemyScripts : MonoBehaviour
     public float bulletSpeed = 5f;
     public float shootInterval = 2f;
 
+    AudioManager audioManager;
+
     [SerializeField]
     private List<Transform> attackPoints = new List<Transform>();
 
@@ -47,6 +49,11 @@ public class EnemyScripts : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     void TakeDamage()
     {
         currentHealth--;
@@ -63,6 +70,7 @@ public class EnemyScripts : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
 
         anim.Play("Destroy1");
+        audioManager.PlaySFX(audioManager.destroy);
         Invoke("DestroyEnemy", 0.25f);
     }
 
@@ -96,6 +104,7 @@ public class EnemyScripts : MonoBehaviour
         {
             yield return new WaitForSeconds(Random.Range(0f, shootInterval));
             Shoot();
+            audioManager.PlaySFX(audioManager.enemyShoot);
         }
     }
 

@@ -12,6 +12,7 @@ TagManager:
   - Enemy1
   - Enemy2
   - Score
+  - Audio
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
     public float speed = 5f;
     public float min_X, max_X;
 
+    AudioManager audioManager;
+
     private Animator anim;
 
     [SerializeField]
@@ -30,6 +32,12 @@ public class PlayerController : MonoBehaviour
         current_Attack_Timer = attack_Timer;
     }
 
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     void Die()
     {
         PlayDestroyAnimationAndRespawn();
@@ -37,7 +45,9 @@ public class PlayerController : MonoBehaviour
 
     void PlayDestroyAnimationAndRespawn()
     {
+        
         anim.Play("PlayerExplosion");
+        audioManager.PlaySFX(audioManager.destroy);
         StartCoroutine(SwitchToIdleAfterDelay(0.35f));
         
     }
@@ -66,6 +76,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Attack();
+                audioManager.PlaySFX(audioManager.playerShoot);
             }
         }
     }
